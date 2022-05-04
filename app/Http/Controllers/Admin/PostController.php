@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Post;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use Illuminate\Support\Str;
 
 class PostController extends Controller
 {
@@ -27,7 +28,7 @@ class PostController extends Controller
      */
     public function create()
     {
-        //
+        return view('admin.posts.create');
     }
 
     /**
@@ -38,7 +39,39 @@ class PostController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $data = $request->validate([
+            'title' => 'required|min:5|max:150',
+            'content' => 'required',
+            'published_at' => 'nullable|date',
+        ]);
+
+        $data = $request->all();
+
+        $slug = Str::slug( $data['title']);
+
+        $slug_first = $slug;
+
+        $i = 1;
+
+        $duplicate_post = Post::where('slug',$slug)->first();
+
+        while($duplicate_post) {
+
+            $slug = $slug_first . '-' . $i;
+            $i++;
+            $duplicate_post = Post::where('slug',$slug)->first();
+
+        }
+
+        $post = new Post();
+
+        $post->fill($data);
+
+        $post->slug = $slug;
+
+        $post->save();
+
+        return redirect()->route('admin.posts.index');
     }
 
     /**
