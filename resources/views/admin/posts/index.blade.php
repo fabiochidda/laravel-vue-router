@@ -6,7 +6,7 @@
         @foreach ($posts as $el)
             
             <li>
-                {{$post->title}}
+                {{$el->title}}
             </li>
 
         @endforeach
