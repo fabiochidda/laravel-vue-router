@@ -47,21 +47,7 @@ class PostController extends Controller
 
         $data = $request->all();
 
-        $slug = Str::slug( $data['title']);
-
-        $slug_first = $slug;
-
-        $i = 1;
-
-        $duplicate_post = Post::where('slug',$slug)->first();
-
-        while($duplicate_post) {
-
-            $slug = $slug_first . '-' . $i;
-            $i++;
-            $duplicate_post = Post::where('slug',$slug)->first();
-
-        }
+        $slug = Post::getUniqueSlug($data['title']);
 
         $post = new Post();
 
@@ -91,9 +77,9 @@ class PostController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(Post $post)
     {
-        //
+        return view('admin.posts.edit',compact('post'));
     }
 
     /**
@@ -103,9 +89,27 @@ class PostController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, Post $post)
     {
-        //
+        $data = $request->validate([
+            'title' => 'required|min:5|max:150',
+            'content' => 'required',
+            'published_at' => 'nullable|date',
+        ]);
+
+        $data = $request->all();
+
+        if($post->title != $data['title']) {
+
+            $slug = Post::getUniqueSlug($data['title']);
+
+        }
+
+        $data['slug'] = $slug;
+
+        $post->update($data);
+
+        return redirect()->route('admin.posts.index');
     }
 
     /**
