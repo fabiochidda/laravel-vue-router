@@ -30,10 +30,14 @@
 
     @foreach ($tags as $el)
         <div class="form-group form-check">
-            <input type="checkbox" class="form-check-input" value="{{$el->id}}" id="tags-{{$el->id}}" name="tag">
+            <input type="checkbox" {{$post->tags->contains($el) ? 'checked' : '' }} class="form-check-input" value="{{$el->id}}" id="tags-{{$el->id}}" name="tags[]">
             <label class="form-check-label" for="tags-{{$el->id}}">{{$el->name}}</label>
         </div>
     @endforeach
+
+    @error('tags')
+        <div class="text-danger">{{ $message }}</div>
+    @enderror
     
     <div class="form-group">
         <label for="content">Contenuto</label>

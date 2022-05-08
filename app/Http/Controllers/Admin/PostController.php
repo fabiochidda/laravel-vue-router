@@ -104,7 +104,8 @@ class PostController extends Controller
             'title' => 'required|min:5|max:150',
             'content' => 'required',
             'published_at' => 'nullable|date',
-            'category_id' => 'nullable|exists:categories,id'
+            'category_id' => 'nullable|exists:categories,id',
+            'tags' => 'exists:tags,id'
         ]);
 
         $data = $request->all();
@@ -115,6 +116,12 @@ class PostController extends Controller
 
             $data['slug'] = $slug;
 
+        }
+
+        if(array_key_exists('tags', $data)) {
+            $post->tags()->sync($data['tags']);
+        } else {
+            $post->tags()->sync([]);
         }
 
         $post->update($data);
