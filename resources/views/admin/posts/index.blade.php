@@ -13,6 +13,7 @@
             <th scope="col">#</th>
             <th scope="col">Titolo</th>
             <th scope="col">Slug</th>
+            <th scope="col">Categoria</th>
             <th scope="col">Data di pubblicazione</th>
             <th scope="col">Data di creazione</th>
           </tr>
@@ -28,6 +29,9 @@
                     </td>
                     <td>
                         {{$el->slug}}
+                    </td>
+                    <td>
+                        {{$el->category ? $post->category->name : 'null'}}
                     </td>
                     <td>
                         {{$el->published_at}}
