@@ -83,7 +83,9 @@ class PostController extends Controller
      */
     public function edit(Post $post)
     {
-        return view('admin.posts.edit',compact('post'));
+        $categories = Category::all();
+
+        return view('admin.posts.edit',compact('post', 'categories'));
     }
 
     /**
@@ -99,6 +101,7 @@ class PostController extends Controller
             'title' => 'required|min:5|max:150',
             'content' => 'required',
             'published_at' => 'nullable|date',
+            'category_id' => 'nullable|exists:categories,id'
         ]);
 
         $data = $request->all();

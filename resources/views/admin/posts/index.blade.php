@@ -31,7 +31,7 @@
                         {{$el->slug}}
                     </td>
                     <td>
-                        {{$el->category ? $post->category->name : 'null'}}
+                        {{$el->category ? $el->category->name : 'null'}}
                     </td>
                     <td>
                         {{$el->published_at}}
