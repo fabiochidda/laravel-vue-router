@@ -14,6 +14,7 @@
             <th scope="col">Titolo</th>
             <th scope="col">Slug</th>
             <th scope="col">Categoria</th>
+            <th scope="col">Tag</th>
             <th scope="col">Data di pubblicazione</th>
             <th scope="col">Data di creazione</th>
           </tr>
@@ -32,6 +33,11 @@
                     </td>
                     <td>
                         {{$el->category ? $el->category->name : 'null'}}
+                    </td>
+                    <td>
+                        @foreach ($el->tags as $el)
+                            <span class="badge badge-primary">{{$el->name}}</span>
+                        @endforeach
                     </td>
                     <td>
                         {{$el->published_at}}
