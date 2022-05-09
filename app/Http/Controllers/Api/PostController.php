@@ -15,7 +15,7 @@ class PostController extends Controller
      */
     public function index()
     {
-        $posts = Post::all();
+        $posts = Post::with(['category','tags'])->limit(10)->get();
 
         return response()->json([
             'posts' => $posts,

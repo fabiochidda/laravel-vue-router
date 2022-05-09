@@ -26,3 +26,7 @@ Route::middleware('auth')->prefix('admin')->namespace('Admin')->name('admin.')->
     Route::resource('/posts', 'PostController');
 
 });
+
+Route::fallback(function() {
+    return view('guest.home');
+});
