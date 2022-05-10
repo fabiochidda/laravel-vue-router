@@ -30,7 +30,7 @@ export default {
         fetchPosts(page = 1) {
             axios.get('/api/posts',{
                 params: {
-                    page
+                    page: page
                 }
             })
             .then( res=> {
