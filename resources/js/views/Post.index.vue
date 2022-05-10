@@ -1,7 +1,14 @@
 <template>
-  <div class="container grid grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-5">
-      <PostCard v-for="post in posts" :key="post.id" :post="post"/>
-  </div>
+    <div>
+        <div class="container grid grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-5">
+            <PostCard v-for="post in posts" :key="post.id" :post="post"/>
+        </div>
+        <div class="container">
+            <ul class="flex gap-4 py-8 justify-end items-center">
+                <li @click="fetchPosts(n)" :class="[currentPage === n ? 'bg-[#ADFC92] text-black' : 'bg-gray-800', 'flex items-center justify-center h-10 w-10 rounded-full cursor-pointer']" v-for="n in lastPage" :key="n">{{n}}</li>
+            </ul>
+        </div>
+    </div>
 </template>
 
 <script>
@@ -14,16 +21,28 @@ export default {
 
     data() {
         return {
-            posts: []
+            posts: [],
+            lastPage: 0,
+            currentPage: 1,
         }
     },
     methods: {
-        fetchPosts() {
-            axios.get('/api/posts')
+        fetchPosts(page = 1) {
+            axios.get('/api/posts',{
+                params: {
+                    page
+                }
+            })
             .then( res=> {
                 const {posts} = res.data
 
-                this.posts = posts
+                const {data, last_page, current_page} = posts
+
+                this.posts = data
+
+                this.currentPage = current_page
+
+                this.lastPage = last_page
             })
             .catch(err=> {
                 console.warn(err)

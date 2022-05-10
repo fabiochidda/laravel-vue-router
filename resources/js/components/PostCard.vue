@@ -5,8 +5,8 @@
       </figure>
       <div class="card-body">
           <h3 class="card-title pt-2 text-[#DAFFED]">{{post.title}}</h3>
-          <p class="italic py-2 text-[#ADFC92]" v-if="post.category">{{post.category.name}}</p>
-          <ul class="tags flex gap-2 flex-wrap">
+          <p class="italic pt-2 text-[#ADFC92]" v-if="post.category">{{post.category.name}}</p>
+          <ul class="tags flex gap-2 flex-wrap pt-2">
               <li class="rounded-full bg-[#473198] text-white px-2" v-for="tag in post.tags" :key="tag.id">{{tag.name}}</li>
           </ul>
       </div>
