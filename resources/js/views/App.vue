@@ -9,7 +9,7 @@
               </ul>
           </nav>
       </header>
-      <PostsGrid />
+      <router-view></router-view>
       <footer>
           <p>Footer Placeholder</p>
       </footer>
@@ -17,7 +17,7 @@
 </template>
 
 <script>
-import PostsGrid from './Post.index.vue'
+import PostsGrid from '../pages/Post.index.vue'
 
 export default {
     components: {
