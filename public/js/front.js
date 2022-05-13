@@ -1923,6 +1923,7 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   props: {
     post: {
@@ -2013,7 +2014,28 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-/* harmony default export */ __webpack_exports__["default"] = ({});
+//
+//
+//
+//
+//
+/* harmony default export */ __webpack_exports__["default"] = ({
+  data: function data() {
+    return {
+      post: null
+    };
+  },
+  beforeMount: function beforeMount() {
+    var _this = this;
+
+    axios.get("/api/posts/".concat(this.$route.params.slug)).then(function (res) {
+      var post = res.data.post;
+      _this.post = post;
+    })["catch"](function (err) {
+      console.warn(err);
+    });
+  }
+});
 
 /***/ }),
 
@@ -2027,6 +2049,8 @@ __webpack_require__.r(__webpack_exports__);
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _pages_Post_index_vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../pages/Post.index.vue */ "./resources/js/pages/Post.index.vue");
+//
+//
 //
 //
 //
@@ -3190,33 +3214,50 @@ var render = function () {
     [
       _vm._m(0),
       _vm._v(" "),
-      _c("div", { staticClass: "card-body" }, [
-        _c("h3", { staticClass: "card-title pt-2 text-[#DAFFED]" }, [
-          _vm._v(_vm._s(_vm.post.title)),
-        ]),
-        _vm._v(" "),
-        _vm.post.category
-          ? _c("p", { staticClass: "italic pt-2 text-[#ADFC92]" }, [
-              _vm._v(_vm._s(_vm.post.category.name)),
-            ])
-          : _vm._e(),
-        _vm._v(" "),
-        _c(
-          "ul",
-          { staticClass: "tags flex gap-2 flex-wrap pt-2" },
-          _vm._l(_vm.post.tags, function (tag) {
-            return _c(
-              "li",
-              {
-                key: tag.id,
-                staticClass: "rounded-full bg-[#473198] text-white px-2",
+      _c(
+        "div",
+        { staticClass: "card-body" },
+        [
+          _c("h3", { staticClass: "card-title pt-2 text-[#DAFFED]" }, [
+            _vm._v(_vm._s(_vm.post.title)),
+          ]),
+          _vm._v(" "),
+          _vm.post.category
+            ? _c("p", { staticClass: "italic pt-2 text-[#ADFC92]" }, [
+                _vm._v(_vm._s(_vm.post.category.name)),
+              ])
+            : _vm._e(),
+          _vm._v(" "),
+          _c(
+            "ul",
+            { staticClass: "tags flex gap-2 flex-wrap pt-2" },
+            _vm._l(_vm.post.tags, function (tag) {
+              return _c(
+                "li",
+                {
+                  key: tag.id,
+                  staticClass: "rounded-full bg-[#473198] text-white px-2",
+                },
+                [_vm._v(_vm._s(tag.name))]
+              )
+            }),
+            0
+          ),
+          _vm._v(" "),
+          _c(
+            "router-link",
+            {
+              staticClass: "bg-[#ADFC92] text-black px-2 mt-5",
+              attrs: {
+                tag: "button",
+                to: { name: "post.show", params: { slug: _vm.post.slug } },
               },
-              [_vm._v(_vm._s(tag.name))]
-            )
-          }),
-          0
-        ),
-      ]),
+            },
+            [_vm._v("Dettagli")]
+          ),
+        ],
+        1
+      ),
     ]
   )
 }
@@ -3318,16 +3359,39 @@ var render = function () {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _vm._m(0)
+  return _c("div", { staticClass: "container py-5" }, [
+    _vm.post
+      ? _c("h2", { staticClass: "text-3xl text-[#DAFFED]" }, [
+          _vm._v(_vm._s(_vm.post.title)),
+        ])
+      : _vm._e(),
+    _vm._v(" "),
+    _vm.post.category
+      ? _c("p", { staticClass: "italic pt-2 text-[#ADFC92]" }, [
+          _vm._v(_vm._s(_vm.post.category.name)),
+        ])
+      : _vm._e(),
+    _vm._v(" "),
+    _c("p", { staticClass: "py-5" }, [_vm._v(_vm._s(_vm.post.content))]),
+    _vm._v(" "),
+    _c(
+      "ul",
+      { staticClass: "tags flex gap-2 pt-2" },
+      _vm._l(_vm.post.tags, function (tag) {
+        return _c(
+          "li",
+          {
+            key: tag.id,
+            staticClass: "rounded-full bg-[#473198] text-white px-2",
+          },
+          [_vm._v(_vm._s(tag.name))]
+        )
+      }),
+      0
+    ),
+  ])
 }
-var staticRenderFns = [
-  function () {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", [_c("h1", [_vm._v("Pagina del singolo post")])])
-  },
-]
+var staticRenderFns = []
 render._withStripped = true
 
 
@@ -3352,7 +3416,31 @@ var render = function () {
   return _c(
     "div",
     { staticClass: "app bg-stone-900 text-white" },
-    [_vm._m(0), _vm._v(" "), _c("router-view"), _vm._v(" "), _vm._m(1)],
+    [
+      _c("header", [
+        _c("nav", [
+          _c("ul", { staticClass: "flex justify-center py-5" }, [
+            _c(
+              "li",
+              {
+                staticClass:
+                  "text-xl rounded-md bg-[#473198] text-white px-3 py-1",
+              },
+              [
+                _c("router-link", { attrs: { to: "/posts" } }, [
+                  _vm._v("Posts"),
+                ]),
+              ],
+              1
+            ),
+          ]),
+        ]),
+      ]),
+      _vm._v(" "),
+      _c("router-view"),
+      _vm._v(" "),
+      _vm._m(0),
+    ],
     1
   )
 }
@@ -3361,23 +3449,11 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("header", [
-      _c("nav", [
-        _c("ul", [
-          _c("li", [_vm._v("Home")]),
-          _vm._v(" "),
-          _c("li", [_vm._v("Posts")]),
-          _vm._v(" "),
-          _c("li", [_vm._v("Categories")]),
-        ]),
+    return _c("footer", [
+      _c("div", { staticClass: "flex justify-center py-5" }, [
+        _c("p", [_vm._v("Made By Fabio")]),
       ]),
     ])
-  },
-  function () {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("footer", [_c("p", [_vm._v("Footer Placeholder")])])
   },
 ]
 render._withStripped = true

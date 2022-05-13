@@ -9,6 +9,7 @@
           <ul class="tags flex gap-2 flex-wrap pt-2">
               <li class="rounded-full bg-[#473198] text-white px-2" v-for="tag in post.tags" :key="tag.id">{{tag.name}}</li>
           </ul>
+          <router-link class="bg-[#ADFC92] text-black px-2 mt-5" tag="button" :to="{name: 'post.show', params: {slug: post.slug} }">Dettagli</router-link>
       </div>
   </div>
 </template>
